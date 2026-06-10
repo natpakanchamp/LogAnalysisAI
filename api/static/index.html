@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Analysis AI · Mission Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <header class="masthead">
+    <div class="brand">
+      <span class="pulse" aria-hidden="true"></span>
+      <div>
+        <h1>Log Analysis <span class="brand-ai">AI</span></h1>
+        <p class="tagline">ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบ · anomaly &rarr; root-cause &rarr; alert</p>
+      </div>
+    </div>
+    <dl class="kpis" id="kpis" aria-label="Live statistics"></dl>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Filters">
+      <div class="filters" role="group" aria-label="Alert filter">
+        <button class="chip is-active" data-filter="all" type="button">All alerts</button>
+        <button class="chip" data-filter="flagged" type="button">Needs review</button>
+      </div>
+      <p class="hint" id="llm-hint"></p>
+    </section>
+
+    <section class="feed" id="feed" aria-live="polite" aria-label="Alert feed">
+      <p class="empty" id="empty">Loading alert feed&hellip;</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>DeepLog + Drain3 · rule-baseline comparison · HITL Pattern 2</span>
+    <span id="footer-meta"></span>
+  </footer>
+
+  <template id="alert-template">
+    <article class="alert" tabindex="0">
+      <div class="alert-rail"></div>
+      <div class="alert-body">
+        <div class="alert-top">
+          <span class="sev"></span>
+          <span class="category"></span>
+          <span class="spacer"></span>
+          <span class="flag" hidden>● needs review</span>
+        </div>
+        <h2 class="suspect"></h2>
+        <p class="summary"></p>
+        <div class="meta-grid">
+          <div><span class="label">Confidence</span>
+            <div class="bar"><i class="bar-fill"></i><b class="bar-val"></b></div>
+          </div>
+          <div><span class="label">Anomaly score</span>
+            <div class="bar bar-warn"><i class="bar-fill"></i><b class="bar-val"></b></div>
+          </div>
+          <div><span class="label">Detectors</span><div class="detectors"></div></div>
+          <div><span class="label">Suspect commit</span><code class="commit"></code></div>
+        </div>
+        <div class="reasons" hidden><span class="label">Review triggers</span><div class="reason-tags"></div></div>
+        <details class="evidence">
+          <summary>Evidence &amp; redacted log lines</summary>
+          <pre class="loglines"></pre>
+          <p class="redaction"></p>
+        </details>
+        <div class="actions">
+          <button class="btn btn-accept" data-action="accept" type="button">✓ Confirm incident</button>
+          <button class="btn btn-reject" data-action="reject" type="button">✕ False positive</button>
+          <button class="btn btn-ghost" data-action="explain" type="button">✦ Explain with AI</button>
+          <span class="verdict" hidden></span>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
