@@ -4,7 +4,7 @@ A runnable prototype of the PRD *"Log Analysis AI"*: it ingests microservice log
 simulated real-time stream, **redacts secrets**, parses lines into templates, detects
 **anomalies** with a DeepLog-style LSTM (compared against a rule-based baseline),
 **classifies the root cause**, scores **severity + confidence**, **summarizes the cause
-with Claude**, and emits **alerts**. Low-confidence or conflicting alerts are routed to a
+with Gemini**, and emits **alerts**. Low-confidence or conflicting alerts are routed to a
 **Human-in-the-Loop (HITL)** dashboard for accept/reject, and decisions are stored as
 feedback for retraining.
 
@@ -16,7 +16,7 @@ feedback for retraining.
 |---|---|
 | §02 Anomaly Detection (Predictive) | `detection/deeplog.py` — LSTM next-event predictor |
 | §02 Classification (Supervised) | `classification/root_cause.py` — sklearn category model |
-| §02 Generative (LLM) | `summarize/llm_summarizer.py` — Claude + template fallback |
+| §02 Generative (LLM) | `summarize/llm_summarizer.py` — Gemini (free tier) + template fallback |
 | §03 Redaction layer | `redaction/redactor.py` — strips tokens/passwords/PII pre-model |
 | §04 Success metrics | `metrics/evaluation.py` — Recall / Precision / F1 / MTTD vs thresholds |
 | §05 HITL (Pattern 2) | `alerting/hitl.py` — flags conf<0.65, AI↔rule conflict, heartbeat deadlock |
@@ -87,7 +87,8 @@ rules. 48 tests, ~91% coverage on core logic.
 ## Configuration
 
 Copy `.env.example` → `.env`. Everything has an offline fallback; the only externally
-useful key is `ANTHROPIC_API_KEY` (enables Claude summaries instead of templates).
+useful key is `GEMINI_API_KEY` (enables Gemini summaries instead of templates). Get a free
+key at https://aistudio.google.com/apikey.
 
 ## License
 

@@ -34,20 +34,12 @@ body {
   margin: 0;
   font-family: var(--sans);
   color: var(--text);
-  background:
-    radial-gradient(1200px 600px at 85% -10%, oklch(24% 0.05 250 / 0.5), transparent),
-    radial-gradient(900px 500px at 0% 0%, oklch(22% 0.06 320 / 0.35), transparent),
-    var(--bg);
+  background: var(--bg);
   min-height: 100vh;
 }
 
-/* subtle animated scan line — atmosphere, not distraction */
-.scanline {
-  position: fixed; inset: 0; pointer-events: none; z-index: 5;
-  background: linear-gradient(oklch(100% 0 0 / 0.02) 1px, transparent 1px);
-  background-size: 100% 3px;
-  mix-blend-mode: overlay; opacity: 0.4;
-}
+/* scanline texture removed — flat solid theme */
+.scanline { display: none; }
 
 /* ---------- masthead ---------- */
 .masthead {
@@ -55,15 +47,14 @@ body {
   align-items: center; justify-content: space-between;
   padding: var(--space) clamp(1rem, 4vw, 3rem);
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(180deg, oklch(20% 0.03 262 / 0.7), transparent);
+  background: var(--bg-deep);
   backdrop-filter: blur(8px);
   position: sticky; top: 0; z-index: 4;
 }
 .brand { display: flex; align-items: center; gap: 0.9rem; }
 .brand h1 { font-size: var(--text-hero); margin: 0; letter-spacing: -0.02em; font-weight: 680; }
 .brand-ai {
-  background: linear-gradient(92deg, var(--accent), oklch(80% 0.16 320));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent);
 }
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.82rem; }
 .pulse {
@@ -106,7 +97,7 @@ main { padding: var(--space) clamp(1rem, 4vw, 3rem) 4rem; }
 
 .alert {
   display: grid; grid-template-columns: 6px 1fr;
-  background: linear-gradient(180deg, var(--surface), var(--bg-deep));
+  background: var(--surface);
   border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
@@ -134,8 +125,8 @@ main { padding: var(--space) clamp(1rem, 4vw, 3rem) 4rem; }
 .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.9rem 1.2rem; margin-bottom: 0.9rem; }
 .label { display: block; color: var(--text-faint); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
 .bar { position: relative; height: 22px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
-.bar-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, var(--accent), oklch(82% 0.16 320)); transition: width 600ms var(--ease); }
-.bar-warn .bar-fill { background: linear-gradient(90deg, var(--medium), var(--high)); }
+.bar-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); transition: width 600ms var(--ease); }
+.bar-warn .bar-fill { background: var(--high); }
 .bar-val { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 0.74rem; font-variant-numeric: tabular-nums; font-weight: 640; }
 
 .detectors { display: flex; gap: 0.35rem; flex-wrap: wrap; }

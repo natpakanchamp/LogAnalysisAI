@@ -48,10 +48,14 @@ def main(argv: list[str] | None = None) -> int:
     drain.freeze()
     print(f"  Drain mined {drain.num_keys} distinct event templates")
 
+    # 'g' is dataset-dependent (see scripts/sweep_candidates.py): HDFS needs a wider top-g.
+    num_candidates = (
+        settings.num_candidates_hdfs if args.dataset == "hdfs" else settings.num_candidates
+    )
     t0 = time.time()
     detector = DeepLogDetector(
         num_keys=drain.num_keys, window_size=settings.window_size,
-        num_candidates=settings.num_candidates, embedding_dim=settings.embedding_dim,
+        num_candidates=num_candidates, embedding_dim=settings.embedding_dim,
         hidden_size=settings.hidden_size, num_layers=settings.num_layers,
         epochs=args.epochs, batch_size=settings.batch_size, learning_rate=settings.learning_rate,
     )

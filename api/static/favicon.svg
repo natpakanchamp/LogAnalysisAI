@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Log Analysis AI">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#16202e"/>
+      <stop offset="100%" stop-color="#0c121c"/>
+    </radialGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+  <!-- radar rings -->
+  <circle cx="16" cy="16" r="9" fill="none" stroke="#2c3a4d" stroke-width="1.2"/>
+  <circle cx="16" cy="16" r="5" fill="none" stroke="#2c3a4d" stroke-width="1.2"/>
+  <!-- sweep -->
+  <path d="M16 16 L16 6 A10 10 0 0 1 24.7 11 Z" fill="#37e0d8" opacity="0.45"/>
+  <!-- anomaly blip -->
+  <circle cx="21.5" cy="11.5" r="2.1" fill="#ff5d6c"/>
+  <circle cx="16" cy="16" r="1.6" fill="#37e0d8"/>
+</svg>

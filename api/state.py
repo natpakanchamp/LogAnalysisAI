@@ -29,7 +29,7 @@ class DashboardState:
         self.alerts_by_id: dict[str, dict] = {}
         self.sessions_by_alert: dict[str, object] = {}
         self.feedback = FeedbackStore(settings.data_dir / "feedback.jsonl")
-        self.llm = Summarizer()  # may use Claude on demand for /explain
+        self.llm = Summarizer()  # may use Gemini on demand for /explain
         self._pipeline: Pipeline | None = None
 
     def load(self) -> None:

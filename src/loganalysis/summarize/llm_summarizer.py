@@ -1,9 +1,9 @@
 """LLM root-cause summarizer (PRD §02: Generative AI).
 
-Uses Anthropic Claude to turn structured detection output into a short, human-readable
-root-cause explanation for the on-call engineer. Falls back to a deterministic template
-when no API key is configured or any error occurs — the pipeline must never fail because
-the LLM is unavailable (PRD §06 mitigations).
+Uses Google Gemini (free tier) to turn structured detection output into a short,
+human-readable root-cause explanation for the on-call engineer. Falls back to a
+deterministic template when no API key is configured or any error occurs — the pipeline
+must never fail because the LLM is unavailable (PRD §06 mitigations).
 """
 
 from __future__ import annotations
@@ -23,12 +23,15 @@ class Summarizer:
     def __init__(self, api_key: str | None = None, model: str | None = None) -> None:
         self.model = model or settings.llm_model
         self._client = None
-        key = api_key if api_key is not None else settings.anthropic_api_key
+        self._types = None
+        key = api_key if api_key is not None else settings.gemini_api_key
         if key:
             try:
-                import anthropic
+                from google import genai
+                from google.genai import types
 
-                self._client = anthropic.Anthropic(api_key=key)
+                self._client = genai.Client(api_key=key)
+                self._types = types
             except Exception:  # pragma: no cover - import/credential issues degrade gracefully
                 self._client = None
 
@@ -60,17 +63,23 @@ class Summarizer:
             suspect_commit=suspect_commit, sample_messages=sample_messages,
             detectors=detectors, anomaly_score=anomaly_score, confidence=confidence,
         )
+        config = self._types.GenerateContentConfig(
+            system_instruction=_SYSTEM_PROMPT,
+            max_output_tokens=settings.llm_max_tokens,
+            # Disable "thinking" — a 2-3 sentence summary doesn't need it, and on
+            # 2.5-flash thinking would otherwise consume the output budget.
+            thinking_config=self._types.ThinkingConfig(thinking_budget=0),
+        )
         try:
-            message = self._client.messages.create(
-                model=self.model,
-                max_tokens=settings.llm_max_tokens,
-                system=_SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": prompt}],
-            )
-            text = "".join(
-                block.text for block in message.content if getattr(block, "type", "") == "text"
-            ).strip()
-            return text or fallback
+            # Retry once: 2.5-flash occasionally returns an empty first response.
+            for _ in range(2):
+                response = self._client.models.generate_content(
+                    model=self.model, contents=prompt, config=config
+                )
+                text = (response.text or "").strip()
+                if text:
+                    return text
+            return fallback
         except Exception:  # pragma: no cover - network/credential failures fall back
             return fallback
 

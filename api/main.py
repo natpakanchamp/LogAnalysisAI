@@ -31,6 +31,12 @@ def index() -> FileResponse:
     return FileResponse(_STATIC / "index.html")
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon() -> FileResponse:
+    # Browsers request /favicon.ico by default; serve the SVG to avoid 404 noise.
+    return FileResponse(_STATIC / "favicon.svg", media_type="image/svg+xml")
+
+
 @app.get("/healthz")
 def healthz() -> dict:
     return {"status": "ok", "alerts_loaded": state.loaded}

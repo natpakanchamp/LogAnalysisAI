@@ -36,8 +36,8 @@ async function loadStats() {
     .join("");
   const hint = document.getElementById("llm-hint");
   hint.textContent = s.llm_enabled
-    ? "Claude summaries enabled · click ✦ Explain with AI"
-    : "LLM key not set · using deterministic template summaries (set ANTHROPIC_API_KEY for Claude)";
+    ? "Gemini summaries enabled · click ✦ Explain with AI"
+    : "LLM key not set · using deterministic template summaries (set GEMINI_API_KEY for Gemini)";
 }
 
 async function loadAlerts() {
