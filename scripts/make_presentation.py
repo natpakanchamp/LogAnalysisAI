@@ -66,6 +66,16 @@ def load_sweep(name: str = "hdfs") -> dict | None:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_qr() -> str:
+    """Inline the demo QR SVG (scaled to fill its container); '' if not generated yet."""
+    path = ROOT / "docs" / "demo_qr.svg"
+    if not path.exists():
+        return ""
+    svg = path.read_text(encoding="utf-8")
+    svg = svg.split("?>", 1)[-1].strip()  # drop the XML declaration
+    return svg.replace('width="37mm" height="37mm"', 'width="100%" height="100%"')
+
+
 def chip(text: str, cls: str = "") -> str:
     return f'<span class="chip {cls}">{text}</span>'
 
@@ -265,7 +275,14 @@ python scripts/train.py --dataset sample</div></div></div>
         &middot; วัดผลเอง: <code>python scripts/evaluate.py --dataset sample</code></p>
     """.replace("{demo_url}", DEMO_URL).replace("{demo_label}", DEMO_LABEL), 10, total)
 
-    summary = """<section class="slide closing">
+    qr_svg = load_qr()
+    qr_block = f"""
+      <div class="close-qr">
+        <div class="qr-box">{qr_svg}</div>
+        <div class="qr-cap">สแกนเพื่อลองเดโม<br><span>{DEMO_LABEL}</span></div>
+      </div>""" if qr_svg else ""
+
+    summary = f"""<section class="slide closing">
       <div class="kicker">สรุป · Summary</div>
       <div class="close-title">Log Analysis AI</div>
       <div class="close-sub">เปลี่ยนการไล่ log หลายชั่วโมง ให้เหลือ "อ่าน + กดยืนยัน" ไม่กี่นาที</div>
@@ -275,7 +292,7 @@ python scripts/train.py --dataset sample</div></div></div>
         <div>✓ Human-in-the-Loop กันความผิดพลาด</div>
         <div>✓ พิสูจน์ผลได้ รันซ้ำได้</div>
       </div>
-      <div class="close-by">ณัฐปคัลภ์ กันทะศร &middot; CP250041 &middot; ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบด้วย AI</div>
+      <div class="close-by">ณัฐปคัลภ์ กันทะศร &middot; CP250041 &middot; ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบด้วย AI</div>{qr_block}
     </section>"""
 
     slides = [cover, problem, solution, models, verify, pipeline, hitl, results, how1, how2, summary]
@@ -394,6 +411,13 @@ _PAGE_OPEN = """<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><styl
   .close-points { font-size: 18px; line-height: 2.1; color: #cdd9e5; }
   .close-points div { }
   .close-by { margin-top: 44px; color: #5b6b7d; font-size: 14px; }
+  .close-qr { position: absolute; right: 0.95in; top: 50%; transform: translateY(-50%);
+              text-align: center; }
+  .qr-box { width: 184px; height: 184px; background: #fff; border-radius: 16px; padding: 14px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.45); }
+  .qr-box svg { display: block; }
+  .qr-cap { margin-top: 14px; color: #cdd9e5; font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .qr-cap span { color: #37e0d8; font-size: 12.5px; font-weight: 600; }
 </style></head><body>
 """
 
