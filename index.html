@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log Analysis AI · Mission Control</title>
-  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div class="scanline" aria-hidden="true"></div>
@@ -14,8 +14,8 @@
     <div class="brand">
       <span class="pulse" aria-hidden="true"></span>
       <div>
-        <h1>Log Analysis <span class="brand-ai">AI</span></h1>
-        <p class="tagline">ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบ · anomaly &rarr; root-cause &rarr; alert</p>
+        <h1>Log Analysis <span class="brand-ai">AI</span> <span style="font:700 11px/1 -apple-system,sans-serif;letter-spacing:.12em;color:#0b0f17;background:#37e0d8;padding:3px 7px;border-radius:5px;vertical-align:middle">DEMO</span></h1>
+        <p class="tagline">ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบ · anomaly &rarr; root-cause &rarr; alert<br><span style="color:#8fa3b5;font-size:12px">Static snapshot for review · live actions simulated · full app: <code>uvicorn api.main:app</code></span></p>
       </div>
     </div>
     <dl class="kpis" id="kpis" aria-label="Live statistics"></dl>
@@ -78,6 +78,7 @@
     </article>
   </template>
 
-  <script src="/static/app.js"></script>
+  <script src="./static-shim.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
