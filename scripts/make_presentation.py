@@ -24,6 +24,10 @@ from loganalysis.summarize.llm_summarizer import Summarizer  # noqa: E402
 
 _CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
+# Live demo (static dashboard snapshot on GitHub Pages).
+DEMO_URL = "https://natpakanchamp.github.io/LogAnalysisAI/"
+DEMO_LABEL = "natpakanchamp.github.io/LogAnalysisAI"
+
 
 def compute_metrics() -> dict:
     sessions = load_dataset("sample", settings.dataset_dir("sample"))
@@ -80,12 +84,14 @@ def slide(kicker: str, title: str, body: str, page: int, total: int) -> str:
 def build_html(m: dict) -> str:
     total = 11
     cmp = load_comparison()
-    cover = """<section class="slide cover">
+    cover = f"""<section class="slide cover">
       <div class="cover-kicker">AI PRODUCT PRESENTATION &middot; M5 · PM for AI Projects</div>
       <div class="cover-title">Log Analysis <span class="accent">AI</span></div>
       <div class="cover-sub">ผู้ช่วยวิเคราะห์ Log และเฝ้าระวังระบบด้วย AI</div>
       <div class="cover-rule"></div>
       <div class="cover-tag">ตรวจจับความผิดปกติ &rarr; วิเคราะห์ต้นเหตุ &rarr; แจ้งเตือนอัจฉริยะ &rarr; ให้คนยืนยัน</div>
+      <div class="cover-demo">🔗 Live demo &nbsp;
+        <a href="{DEMO_URL}">{DEMO_LABEL}</a></div>
       <div class="cover-by">
         <div><span class="lbl">ผู้จัดทำ</span><b>ณัฐปคัลภ์ กันทะศร</b> &nbsp;(Natpakan Kanthasorn)</div>
         <div><span class="lbl">รหัส</span><b>CP250041</b> &nbsp;&middot;&nbsp; CP Scholarship AI PM Track &middot; True Digital Academy</div>
@@ -254,8 +260,10 @@ python scripts/train.py --dataset sample</div></div></div>
         <div class="use"><div class="use-n">5</div><b>ตัดสินใจ</b><br>กด ✓ ยอมรับ (เป็นปัญหาจริง) หรือ ✕ ปฏิเสธ (เตือนผิด)</div>
         <div class="use"><div class="use-n">6</div><b>ปิด loop</b><br>feedback ถูกบันทึกไปปรับปรุงโมเดล</div>
       </div>
-      <p class="note">วัดผลตัวเองได้: <code>python scripts/evaluate.py --dataset sample</code> → เห็น PASS/FAIL ทุกตัวชี้วัด</p>
-    """, 10, total)
+      <p class="note">🔗 <b>ลองเล่นได้ทันที (ไม่ต้องติดตั้ง):</b>
+        <a href="{demo_url}" style="color:#37e0d8;text-decoration:none">{demo_label}</a>
+        &middot; วัดผลเอง: <code>python scripts/evaluate.py --dataset sample</code></p>
+    """.replace("{demo_url}", DEMO_URL).replace("{demo_label}", DEMO_LABEL), 10, total)
 
     summary = """<section class="slide closing">
       <div class="kicker">สรุป · Summary</div>
@@ -307,7 +315,11 @@ _PAGE_OPEN = """<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><styl
   .cover-sub { font-size: 25px; color: #cdd9e5; margin-top: 8px; }
   .cover-rule { height: 4px; width: 90px; background: #37e0d8; margin: 26px 0; }
   .cover-tag { font-size: 17px; color: #8fa3b5; letter-spacing: 0.01em; }
-  .cover-by { margin-top: 60px; font-size: 16px; line-height: 2; }
+  .cover-demo { margin-top: 30px; font-size: 17px; color: #cdd9e5; font-weight: 700;
+                background: #102733; border: 1px solid #1f5140; border-left: 4px solid #37e0d8;
+                border-radius: 10px; padding: 12px 18px; display: inline-block; }
+  .cover-demo a { color: #37e0d8; text-decoration: none; }
+  .cover-by { margin-top: 34px; font-size: 16px; line-height: 2; }
   .cover-by .lbl { color: #5b6b7d; display: inline-block; width: 64px; font-size: 13px; }
   .cover-by b { color: #37e0d8; }
 
